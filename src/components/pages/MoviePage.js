@@ -3,6 +3,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import PropTypes from "prop-types";
+import MovieList from "../MovieList";
 
 export class MoviePage extends Component {
   static propTypes = {
@@ -10,7 +11,12 @@ export class MoviePage extends Component {
   };
   render() {
     console.log("Props:", this.props);
-    return <div>MoviePage Comp..</div>;
+    return (
+      <div>
+        <h2>MoviePage Comp..</h2>
+        <MovieList movies={this.props.movies} />
+      </div>
+    );
   }
 }
 
