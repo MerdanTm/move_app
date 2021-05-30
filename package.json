@@ -27,7 +27,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && mv build/index.html build/200.html && surge build movie_app_mrdn.surge.sh"
+    "deploy": "npm run buil d&& rename build/index.html build/200.html && surge build movie_app_mrdn.surge.sh"
   },
   "eslintConfig": {
     "extends": [
