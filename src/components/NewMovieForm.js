@@ -1,14 +1,31 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Image, Form, Input, Message } from "semantic-ui-react";
 import InlineError from "./InlineError";
-import { Redirect } from "react-router-dom";
+import { Redirect, useParams } from "react-router-dom";
 
-const NewMovieForm = ({ addNewMovie, loading, errorText, done }) => {
-  const [title, setTitle] = useState("");
-  const [cover, setCover] = useState("");
+const NewMovieForm = ({
+  addNewMovie,
+  updateMovie,
+  loading,
+  errorText,
+  done,
+  movie,
+  gotMovie,
+}) => {
+  const params = useParams();
+  const _id = movie ? movie.id : params.id;
+  const [title, setTitle] = useState(movie ? movie.title : "");
+  const [cover, setCover] = useState(movie ? movie.cover : "");
   const [error, setError] = useState({});
   const [submitStatus, setSubmitStatus] = useState(false);
+
+  useEffect(() => {
+    if (gotMovie && gotMovie.title) {
+      setTitle(gotMovie.title);
+      setCover(gotMovie.cover);
+    }
+  }, [gotMovie]);
 
   const onFormSubmit = () => {
     const errMessages = {};
@@ -21,7 +38,11 @@ const NewMovieForm = ({ addNewMovie, loading, errorText, done }) => {
 
     setError(errMessages);
     if (Object.keys(errMessages).length === 0) {
-      addNewMovie({ title, cover });
+      if (!_id) {
+        addNewMovie({ title, cover });
+      } else {
+        updateMovie({ _id, title, cover });
+      }
       setSubmitStatus(true);
     }
   };
@@ -66,7 +87,9 @@ const NewMovieForm = ({ addNewMovie, loading, errorText, done }) => {
 
   // console.log("t:",title);
   /// console.log("c:",cover);
-  return done && submitStatus ? <Redirect to="/movies" /> : formData;
+  return (
+    <div>{done && submitStatus ? <Redirect to="/movies" /> : formData}</div>
+  );
 };
 
 export default NewMovieForm;
